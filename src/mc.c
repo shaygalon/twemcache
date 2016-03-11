@@ -104,6 +104,7 @@
 #define MC_FACTOR           1.25
 #define MC_MAXBYTES         (64 * MB)
 
+
 struct settings settings;          /* twemcache settings */
 static int show_help;              /* show twemcache help? */
 static int show_version;           /* show twemcache version? */

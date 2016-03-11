@@ -32,6 +32,8 @@
 #include <sys/resource.h>
 
 #include <mc_core.h>
+#include "cpu_stat_thread.h"
+extern cpu_info_t cpu_stats;
 
 extern struct settings settings;
 extern struct thread_worker *threads;
@@ -56,6 +58,7 @@ static struct stats_metric stats_tmetrics[] = {
 static struct stats_metric stats_smetrics[] = {
     STATS_SLAB_METRICS(MAKEARRAY)
 };
+
 #undef MAKEARRAY
 
 /*
@@ -85,6 +88,7 @@ static struct stats_desc stats_tdesc[] = {
 static struct stats_desc stats_sdesc[] = {
     STATS_SLAB_METRICS(MAKEARRAY)
 };
+
 #undef MAKEARRAY
 
 void
@@ -184,6 +188,7 @@ stats_template_init(void)
         stats_metric_init(&stats_tmax[i]);
     }
 
+  
     /* skipping slab level max for now */
 }
 
@@ -690,6 +695,9 @@ stats_default(struct conn *c)
 
     getrusage(RUSAGE_SELF, &usage);
 
+    stats_print(c, "cpu_avg", "%.1Lf%%", cpu_stats.avg);
+    stats_print(c, "cpu_min", "%.1Lf%%", cpu_stats.min);
+    stats_print(c, "cpu_max", "%.1Lf%%", cpu_stats.max);
     stats_print(c, "pid", "%d", (int)settings.pid);
     stats_print(c, "uptime", "%u", uptime);
     stats_print(c, "time", "%ld", abstime);

@@ -31,6 +31,8 @@
 #include <stdlib.h>
 
 #include <mc_core.h>
+#include "cpu_stat_thread.h"
+cpu_info_t cpu_stats;
 
 extern struct settings settings;
 
@@ -1072,6 +1074,8 @@ core_init(void)
     }
 
     stats_init();
+//SG: Add thread to collect spu stats
+    pthread_create(&(cpu_stats.tid), 0, cpu_stat_thread, &cpu_stats);
 
     status = klog_init();
     if (status != MC_OK) {
@@ -1092,6 +1096,7 @@ core_init(void)
 void
 core_deinit(void)
 {
+	stop_cpu_stats();
     klog_deinit();
 }
 

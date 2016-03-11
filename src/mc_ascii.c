@@ -31,7 +31,7 @@
 #include <stdlib.h>
 
 #include <mc_core.h>
-
+#include "cpu_stat_thread.h"
 extern struct settings settings;
 
 /*
@@ -1328,6 +1328,7 @@ asc_process_stats(struct conn *c, struct token *token, int ntoken)
     if (ntoken == 2) {
         stats_default(c);
     } else if (strncmp(t->val, "reset", t->len) == 0) {
+	reset_cpu_stats();
         log_warn("server error on c %d for req of type %d because stats reset "
                  "is not supported", c->sd, c->req_type);
         asc_rsp_server_error(c);
